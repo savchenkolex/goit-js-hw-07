@@ -42,3 +42,7 @@
 .gallery__link:hover {
   cursor: zoom-in;
 }
+
+h2.gallery-title { 
+  color:dodgerblue ;
+}
