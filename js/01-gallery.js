@@ -12,12 +12,15 @@ galleryEl.insertAdjacentHTML("beforeend",createGalleryItems(galleryItems));
 document.addEventListener("keydown", keyCloseImgHandler);
 
 
+
+
 let instance = {};
 
 function createGalleryItems(arr) {
     return arr.map(({preview, original,description})=>{
+
         return `<li class="gallery__item" >
-                    <a href="#" class="gallery__link">
+                    <a href="${original}" class="gallery__link">
                         <img 
                         class="gallery__image" 
                         src="${preview}" 
@@ -29,10 +32,13 @@ function createGalleryItems(arr) {
 }
 
 function imageClickGalleryHendler (event) {
+    event.preventDefault();
     const targetEl = event.target;
+
     if (!targetEl.classList.contains("gallery__image")) {
         return;
     }
+    
     const title = targetEl.alt;
     const bigImgURL = targetEl.dataset.original;
     instance = basicLightbox.create(`
@@ -43,6 +49,7 @@ function imageClickGalleryHendler (event) {
     instance.show();
     
 }
+
 
 function keyCloseImgHandler (event) {
     const isEscape = event.code === "Escape";
