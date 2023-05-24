@@ -1,10 +1,11 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const galleryEl = document.querySelector(".gallery");
+const galleryBox = document.querySelector(".gallery");
 
-galleryEl.insertAdjacentHTML("beforeend",createGalleryItems(galleryItems));
+galleryBox.insertAdjacentHTML("beforeend",createGalleryItems(galleryItems));
 
+// const galleryEl = document.querySelector('a.gallery__link');
 // galleryEl.addEventListener("click", imageClickGalleryHendler);
 
 function createGalleryItems(arr) {
@@ -16,10 +17,20 @@ function createGalleryItems(arr) {
                         class="gallery__image" 
                         src="${preview}" 
                         data-original="${original}" 
-                        alt="${description}" 
+                        title="${description}" 
                         width=300>
                     </a>
                 </li>`;} ).join("");
 }
 
-let lightbox = new SimpleLightbox('.gallery a');
+// function imageClickGalleryHendler (event) {
+//     preventDefault();
+// }
+
+const lightbox = new SimpleLightbox('.gallery a',{
+    caption:true, 
+    captionSelector: 'img',
+    captionData: 'Title',
+    captionPosition: 'bottom',
+    captionDelay: 250,
+});

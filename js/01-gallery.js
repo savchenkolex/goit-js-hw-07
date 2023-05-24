@@ -9,7 +9,7 @@ galleryEl.addEventListener("click", imageClickGalleryHendler);
 
 galleryEl.insertAdjacentHTML("beforeend",createGalleryItems(galleryItems));
 
-document.addEventListener("keydown", keyCloseImgHandler);
+// document.addEventListener("keydown", keyCloseImgHandler);
 
 
 
@@ -34,22 +34,33 @@ function createGalleryItems(arr) {
 function imageClickGalleryHendler (event) {
     event.preventDefault();
     const targetEl = event.target;
-
-    if (!targetEl.classList.contains("gallery__image")) {
-        return;
+    const isIMG = targetEl.nodeName === "IMG";
+    // if (!targetEl.classList.contains("gallery__image")) {
+    //     return;
+    // }
+    if (!isIMG) {
+             return;
     }
-    
     const title = targetEl.alt;
     const bigImgURL = targetEl.dataset.original;
     instance = basicLightbox.create(`
 	<h2 class="gallery-title">${title}</h2>
 	<img class="gallery__image" src="${bigImgURL}" alt="${title}" >
-    `);
+    `,{
+        onShow: addKeydownHandler,
+        onClose: removeKeydownHandler
+    });
 
     instance.show();
-    
 }
 
+function addKeydownHandler (){
+    document.addEventListener("keydown", keyCloseImgHandler);
+}
+
+function removeKeydownHandler(){
+    document.removeEventListener("keydown", keyCloseImgHandler);
+}
 
 function keyCloseImgHandler (event) {
     const isEscape = event.code === "Escape";
@@ -60,6 +71,5 @@ function keyCloseImgHandler (event) {
     if (basicLightbox.visible()) {
         instance.close();
     }
-   
 }
 
