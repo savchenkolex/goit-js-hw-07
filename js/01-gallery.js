@@ -1,18 +1,10 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-
-
 const galleryEl = document.querySelector(".gallery");
 
 galleryEl.addEventListener("click", imageClickGalleryHendler);
-
 galleryEl.insertAdjacentHTML("beforeend",createGalleryItems(galleryItems));
-
-// document.addEventListener("keydown", keyCloseImgHandler);
-
-
-
 
 let instance = {};
 
@@ -35,9 +27,7 @@ function imageClickGalleryHendler (event) {
     event.preventDefault();
     const targetEl = event.target;
     const isIMG = targetEl.nodeName === "IMG";
-    // if (!targetEl.classList.contains("gallery__image")) {
-    //     return;
-    // }
+
     if (!isIMG) {
              return;
     }
@@ -45,10 +35,11 @@ function imageClickGalleryHendler (event) {
     const bigImgURL = targetEl.dataset.original;
     instance = basicLightbox.create(`
 	<h2 class="gallery-title">${title}</h2>
-	<img class="gallery__image" src="${bigImgURL}" alt="${title}" >
+	<img class="gallery__image bigImg" src="${bigImgURL}" alt="${title}" >
     `,{
         onShow: addKeydownHandler,
-        onClose: removeKeydownHandler
+        onClose: removeKeydownHandler,
+        
     });
 
     instance.show();
@@ -56,20 +47,28 @@ function imageClickGalleryHendler (event) {
 
 function addKeydownHandler (){
     document.addEventListener("keydown", keyCloseImgHandler);
+    document.addEventListener("click", keyCloseImgHandler);
 }
 
 function removeKeydownHandler(){
     document.removeEventListener("keydown", keyCloseImgHandler);
+    document.removeEventListener("click", keyCloseImgHandler);
 }
 
 function keyCloseImgHandler (event) {
     const isEscape = event.code === "Escape";
+    const isMousClick = event.type === "click" && event.target.classList.contains("bigImg");
+    const isVisible = basicLightbox.visible();
     
-    if ( !isEscape) {
+   
+    if (isMousClick) {
+        instance.close();
+    }
+
+    if (!isEscape) {
         return;
     }
-    if (basicLightbox.visible()) {
+    if (isVisible ) {
         instance.close();
     }
 }
-
